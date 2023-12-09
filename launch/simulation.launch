@@ -1,0 +1,24 @@
+<launch>
+    
+    <group ns = "robot">
+        
+        <param name="robot_description" textfile="$(find edo_sim)/robots/edo_sim.urdf" />
+        <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen">
+            <param name="publish_frequency" type="double" value="100.0" />
+            <param name="tf_prefix" value="robot" />
+        </node>
+        <node name="joint_state_publisher_gui" pkg="joint_state_publisher_gui" type="joint_state_publisher_gui"/>
+    </group>
+
+    <group ns = "camera">
+            
+        <param name="robot_description" command="$(find xacro)/xacro $(find kinect_description)/urdf/kinect.urdf.xacro" />
+        <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher_2" output="screen">
+            <param name="publish_frequency" type="double" value="100.0" />
+            <param name="tf_prefix" value="camera" />
+        </node>
+    </group>
+
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find robot_camera_sim)/launch/rviz.rviz" />
+    
+</launch>
